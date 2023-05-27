@@ -26,6 +26,17 @@ public class Song {
 	@Column(name = "name")
 	@NotEmpty
 	private String name;
+	
+	@Column(name = "duration")
+	@NotEmpty
 	private int duration;
+
+	public Song(@NotEmpty String name, @NotEmpty int duration) {
+		super();
+		this.name = name;
+		this.duration = duration;
+	}
+	
+	
 
 }
