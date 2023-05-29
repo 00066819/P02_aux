@@ -1,5 +1,7 @@
 package com.arekusu.ejercicioclase.models.dtos;
 
+import java.util.UUID;
+
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 
@@ -12,8 +14,7 @@ public class SavePlaylistDTO {
 	private String description;
 	
 	@NotEmpty
-	@Pattern(regexp = "^[0-9A-Z]{4}$")
-	private String userCode;
+	private UUID userCode;
 	
 
 }

@@ -11,6 +11,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
@@ -18,7 +20,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Table(name="Playlist")
+@Table(name="playlist")
 @NoArgsConstructor
 @Data
 @Entity
@@ -39,10 +41,10 @@ public class Playlist {
 	@Size(min = 10, max = 100)
 	private String description;
 	
-	@OneToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_code", nullable = true)
 	@JsonIgnore
-	private UUID userCode;
+	private User user;
 
 	public Playlist(@NotEmpty @Size(min = 5, max = 15) String title,
 			@NotEmpty @Size(min = 10, max = 100) String description) {

@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "SongXPlaylist")
+@Table(name = "songxplaylist")
 public class SongXPlaylist {
 
 	@Id
@@ -29,11 +29,11 @@ public class SongXPlaylist {
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "song_code", nullable = true)
-	private UUID songCode;
+	private Song song;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "playlist_code", nullable = true)
-	private UUID playlistCode;
+	private Playlist playlist;
 	
 	@Column(name = "date_added")
 	@NotEmpty
