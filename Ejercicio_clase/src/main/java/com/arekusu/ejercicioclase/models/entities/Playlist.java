@@ -1,5 +1,6 @@
 package com.arekusu.ejercicioclase.models.entities;
 
+import java.util.List;
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -11,14 +12,17 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Table(name="Playlist")
+@ToString(exclude = {"songs"})
 @NoArgsConstructor
 @Data
 @Entity
@@ -43,6 +47,9 @@ public class Playlist {
 	@JoinColumn(name = "user_code", nullable = true)
 	@JsonIgnore
 	private UUID userCode;
+	
+	@OneToMany(mappedBy = "playlist")
+    private List<Song> songs;
 
 	public Playlist(@NotEmpty @Size(min = 5, max = 15) String title,
 			@NotEmpty @Size(min = 10, max = 100) String description) {

@@ -7,8 +7,8 @@ import com.arekusu.ejercicioclase.models.entities.Playlist;
 import com.arekusu.ejercicioclase.models.entities.User;
 
 public interface PlaylistService {
-	void save (SavePlaylistDTO info, User user) throws Exception;
-	void deleteById(String id) throws Exception;
+	void save (SavePlaylistDTO playlist , User user) throws Exception;
+	void deleteByTitle(String title) throws Exception;
 	Playlist findOneById(String id);
 	List<Playlist> findAll();
 	

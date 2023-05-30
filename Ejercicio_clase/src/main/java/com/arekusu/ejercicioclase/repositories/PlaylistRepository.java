@@ -11,4 +11,6 @@ public interface PlaylistRepository extends ListCrudRepository<Playlist, UUID> {
 	
 	List<Playlist> findById(String Id);
 
+	void deleteByTitle(String title);
+
 }
