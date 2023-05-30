@@ -34,9 +34,7 @@ public class PlaylistServiceImplement implements PlaylistService {
 
 	@Override
 	public void deleteByTitle(String title) throws Exception {
-		
 		playlistRepository.deleteByTitle(title);
-		
 	}
 
 	@Override
@@ -47,8 +45,7 @@ public class PlaylistServiceImplement implements PlaylistService {
 
 	@Override
 	public List<Playlist> findAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return playlistRepository.findAll();
 	}
 
 }
