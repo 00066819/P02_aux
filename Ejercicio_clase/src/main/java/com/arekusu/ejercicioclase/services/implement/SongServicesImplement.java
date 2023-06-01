@@ -1,0 +1,69 @@
+	package com.arekusu.ejercicioclase.services.implement;
+	
+	import java.util.List;
+	
+	import org.springframework.beans.factory.annotation.Autowired;
+	import org.springframework.stereotype.Service;
+
+    import com.arekusu.ejercicioclase.models.dtos.SongDTO;
+    import com.arekusu.ejercicioclase.models.entities.Song;
+	import com.arekusu.ejercicioclase.repositories.SongRepository;
+	import com.arekusu.ejercicioclase.services.SongService;
+	
+
+
+	@Service
+	public class SongServicesImplement implements SongService {
+
+	    private final SongRepository songRepository;
+
+	    @Autowired
+	    public SongServicesImplement(SongRepository songRepository) {
+	        this.songRepository = songRepository;
+	    }
+
+	    @Override
+	    public List<Song> getAllSongs() {
+	        return songRepository.findAll();
+	    }
+
+	    @Override
+	    public List<Song> searchSongsByTitle(String title) {
+	        return songRepository.findByTitleContainingIgnoreCase(title);
+	    }
+
+	    @Override
+	    public boolean deleteSongByTitle(String title) {
+	        List<Song> songs = songRepository.findByTitle(title);
+	        if (!songs.isEmpty()) {
+	            songRepository.deleteAll(songs);
+	            return true;
+	        } else {
+	            return false;
+	        }
+	    }
+
+	    @Override
+	    public Song createSong(SongDTO songDTO) {
+	        if (songDTO.getTitle() == null || songDTO.getTitle().isEmpty()) {
+	            throw new IllegalArgumentException("El título de la canción es requerido.");
+	        }
+	        if (songDTO.getTotalDurationInSeconds() <= 0) {
+	            throw new IllegalArgumentException("La duración de la canción debe ser mayor a 0.");
+	        }
+
+	        Song song = new Song(songDTO.getTitle(), songDTO.getTotalDurationInSeconds());
+	        return songRepository.save(song);
+	    }
+
+	    @Override
+	    public Song createSong(Song song) {
+	        if (song.getTitle() == null || song.getTitle().isEmpty()) {
+	            throw new IllegalArgumentException("El título de la canción es requerido.");
+	        }
+	        if (song.getDuration() <= 0) {
+	            throw new IllegalArgumentException("La duración de la canción debe ser mayor a 0.");
+	        }
+	        return songRepository.save(song);
+	    }
+	}
