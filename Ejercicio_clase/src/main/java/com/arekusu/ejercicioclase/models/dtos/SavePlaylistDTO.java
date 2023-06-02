@@ -2,11 +2,13 @@ package com.arekusu.ejercicioclase.models.dtos;
 
 import com.arekusu.ejercicioclase.models.entities.User;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Data
+@Valid
 public class SavePlaylistDTO {
     
     @NotEmpty
