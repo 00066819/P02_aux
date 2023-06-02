@@ -6,7 +6,9 @@ import com.arekusu.ejercicioclase.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import com.arekusu.ejercicioclase.utils.RequestErrorHandler;
 
 import java.util.List;
 
@@ -20,6 +22,8 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
+    
+    private RequestErrorHandler errorHandler;
 
     @GetMapping("/user")
     public ResponseEntity<List<User>> getAllUsers() {
@@ -29,7 +33,7 @@ public class UserController {
 
     @GetMapping("/{username}")
     public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
-        User user = userService.getUserByUsername(username);
+        User user = userService.getUserByUsername(username, username);
         if (user != null) {
             return new ResponseEntity<>(user, HttpStatus.OK);
         }
@@ -37,12 +41,19 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<?> createUser(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<?> createUser(@RequestBody UserDTO userDTO, BindingResult validations) {
+    	
+    	if(validations.hasErrors()) {
+    		return new ResponseEntity<> (
+        			errorHandler.mapErrors(validations.getFieldErrors()),HttpStatus.BAD_REQUEST);
+    	}    	
         try {
             User createdUser = userService.createUser(userDTO);
             return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-    }
+    
 }
+
+    }  

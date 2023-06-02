@@ -7,6 +7,7 @@ import com.arekusu.ejercicioclase.repositories.UserRepository;
 import com.arekusu.ejercicioclase.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import jakarta.transaction.Transactional;
 
 import java.util.List;
 
@@ -21,16 +22,17 @@ public class UserServiceImplement implements UserService {
     }
 
     @Override
+    @Transactional
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-    @Override
-    public User getUserByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public User getUserByUsername(String username, String email) {
+        return userRepository.findByUsernameOrEmail(username,email);
     }
 
     @Override
+    @Transactional(rollbackOn = Exception.class)
     public User createUser(UserDTO userDTO) {
         if (userDTO.getUsername() == null || userDTO.getUsername().isEmpty()) {
             throw new IllegalArgumentException("El nombre de usuario es requerido.");
@@ -42,7 +44,7 @@ public class UserServiceImplement implements UserService {
             throw new IllegalArgumentException("La contraseña es requerida.");
         }
 
-        User existingUser = userRepository.findByUsername(userDTO.getUsername());
+        User existingUser = userRepository.findByUsernameOrEmail(userDTO.getUsername(),userDTO.getEmail());
         if (existingUser != null) {
             throw new IllegalArgumentException("Ya existe un usuario con ese nombre de usuario.");
         }

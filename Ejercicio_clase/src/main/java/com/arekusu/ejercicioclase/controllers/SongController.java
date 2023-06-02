@@ -25,7 +25,7 @@ import com.arekusu.ejercicioclase.models.entities.Song;
 	        this.songService = songService;
 	    }
 	
-	    @GetMapping
+	    @GetMapping("/")
 	    public ResponseEntity<List<SongDTO>> getAllSongs() {
 	        List<Song> songs = songService.getAllSongs();
 	        List<SongDTO> songDTOs = new ArrayList<>();
