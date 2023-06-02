@@ -14,5 +14,7 @@ public interface PlaylistService {
 	void deleteByTitle(String title) throws Exception;
 	Playlist findOneById(String id);
 	List<Playlist> findAll();
+	List<Playlist> findPlaylistByUser(User user);
+    List<Playlist> findPlaylistsByUserAndTitle(User user, String title);
 	
 }

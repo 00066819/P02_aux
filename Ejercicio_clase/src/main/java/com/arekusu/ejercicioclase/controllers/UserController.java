@@ -1,7 +1,10 @@
 package com.arekusu.ejercicioclase.controllers;
 
+import com.arekusu.ejercicioclase.models.dtos.MessageDTO;
 import com.arekusu.ejercicioclase.models.dtos.UserDTO;
+import com.arekusu.ejercicioclase.models.entities.Playlist;
 import com.arekusu.ejercicioclase.models.entities.User;
+import com.arekusu.ejercicioclase.services.PlaylistService;
 import com.arekusu.ejercicioclase.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,10 +19,15 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
-    private final UserService userService;
+    private UserService userService;
+    
+    @Autowired
+    private PlaylistService playlistService;
+ 
 
     @Autowired
-    public UserController(UserService userService) {
+    public void PlaylistController(PlaylistService playlistService, UserService userService) {
+        this.playlistService = playlistService;
         this.userService = userService;
     }
     
@@ -55,5 +63,21 @@ public class UserController {
         }
     
 }
+    
+    @GetMapping("playlist")
+    public ResponseEntity<?> getPlaylistByUser(@RequestParam("User")String userData, @RequestParam(required = false) String title){
+    	User user = userService.getUserByUsername(userData,title);
+    	if(user == null) {
+    		return new ResponseEntity<>(
+    				new MessageDTO("user not found"),HttpStatus.NOT_FOUND);
+    	}
+    	List<Playlist> playlists;
+        if (title != null && !title.isEmpty()) {
+            playlists = playlistService.findPlaylistsByUserAndTitle(user, title);
+        } else {
+            playlists = playlistService.findPlaylistByUser(user);
+        }
+        return ResponseEntity.ok(playlists);
+    }
+ }  
 
-    }  

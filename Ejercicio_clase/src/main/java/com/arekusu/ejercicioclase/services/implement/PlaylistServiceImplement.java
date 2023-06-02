@@ -29,7 +29,7 @@ public class PlaylistServiceImplement implements PlaylistService {
         Playlist playlist = new Playlist();
         playlist.setTitle(info.getTitle());
         playlist.setDescription(info.getDescription());
-        playlist.setUserCode(user.getCode().toString()); 
+        playlist.setUser(user); 
         playlistRepository.save(playlist);
     }
 
@@ -55,5 +55,16 @@ public class PlaylistServiceImplement implements PlaylistService {
     public List<Playlist> findAll() {
         return playlistRepository.findAll();
     }
+
+	@Override
+	public List<Playlist> findPlaylistsByUserAndTitle(User user, String title) {
+		return playlistRepository.findByUserAndTitleContaining(user, title);
+	}
+
+	@Override
+	public List<Playlist> findPlaylistByUser(User user) {
+		   return playlistRepository.findByUser(user);
+	}
+
 }
 

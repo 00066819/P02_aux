@@ -6,9 +6,12 @@ import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
@@ -39,17 +42,18 @@ public class Playlist {
 	@Size(min = 10, max = 100)
 	private String description;
 	
-	@Column(name = "user_code")
-	@NotEmpty
-	private String userCode;
+	  @ManyToOne(fetch = FetchType.EAGER)
+	    @JoinColumn(name = "user_code", nullable=true)
+	    private User user;
 	
 	@OneToMany(mappedBy = "playlist")
     private List<Song> songs;
 
 	public Playlist(@NotEmpty @Size(min = 5, max = 15) String title,
-			@NotEmpty @Size(min = 10, max = 100) String description) {
+			@NotEmpty @Size(min = 10, max = 100) String description, User user) {
 		super();
 		this.title = title;
 		this.description = description;
+		this.user =user;
 	}
 }
