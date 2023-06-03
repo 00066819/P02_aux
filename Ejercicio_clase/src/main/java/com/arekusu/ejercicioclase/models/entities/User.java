@@ -2,6 +2,8 @@ package com.arekusu.ejercicioclase.models.entities;
 
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -38,6 +40,7 @@ public class User {
 	
 	@Column(name = "password")
 	@NotEmpty
+	@JsonIgnore
 	@Pattern(regexp = "^(?=\\w*\\d)(?=\\w*[A-Z])(?=\\w*[a-z])\\S{8,16}$")
 	private String password;
 

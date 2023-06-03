@@ -2,6 +2,8 @@ package com.arekusu.ejercicioclase.models.entities;
 
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,7 +25,7 @@ public class Song {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "code")
-    private UUID id;
+    private UUID code;
 
     @Column(name = "title")
     @NotEmpty
@@ -50,6 +52,7 @@ public class Song {
         return title;
     }
      
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "playlist_id", referencedColumnName = "code")
     private Playlist playlist;

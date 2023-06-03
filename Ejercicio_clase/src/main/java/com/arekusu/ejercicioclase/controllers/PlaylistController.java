@@ -1,5 +1,6 @@
 package com.arekusu.ejercicioclase.controllers;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 
@@ -19,32 +20,43 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.arekusu.ejercicioclase.models.dtos.SavePlaylistDTO;
 import com.arekusu.ejercicioclase.models.entities.Playlist;
+import com.arekusu.ejercicioclase.models.entities.Song;
+import com.arekusu.ejercicioclase.models.entities.SongXPlaylist;
 import com.arekusu.ejercicioclase.models.entities.User;
 import com.arekusu.ejercicioclase.services.PlaylistService;
+import com.arekusu.ejercicioclase.services.SongService;
+import com.arekusu.ejercicioclase.services.SongXPlaylistService;
 import com.arekusu.ejercicioclase.services.UserService;
 import com.arekusu.ejercicioclase.utils.RequestErrorHandler;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/playlist")
+@RequestMapping("/api")
 
 public class PlaylistController {
 	
 	@Autowired
     private final PlaylistService playlistService;
 	@Autowired
+    private final SongService songService;
+	@Autowired
     private final UserService userService;
+	
+	@Autowired
+    private final SongXPlaylistService songXPlaylistService;
 	@Autowired
 	private RequestErrorHandler errorHandler;
 	
     @Autowired
-    public PlaylistController(PlaylistService playlistService, UserService userService) {
+    public PlaylistController(PlaylistService playlistService, SongService songService, UserService userService, SongXPlaylistService songXPlaylistService) {
         this.playlistService = playlistService;
+        this.songService = songService;
         this.userService = userService;
+        this.songXPlaylistService = songXPlaylistService;
     }
 
-    @PostMapping("/save")
+    @PostMapping("/playlist")
     public ResponseEntity<?> savePlaylist(@RequestBody @Valid SavePlaylistDTO playlistDTO, BindingResult validations) {
     	
     	if(validations.hasErrors()) {
@@ -88,6 +100,29 @@ public class PlaylistController {
         return ResponseEntity.ok(playlists);
     }
     
+    @PostMapping("/playlist/{playlistCode}")
+    public ResponseEntity<?> addsSongToPlaylist(@PathVariable String playlistCode, @RequestBody String songCode, BindingResult validations) {
+        if (validations.hasErrors()) {
+            return new ResponseEntity<>(validations.getFieldErrors(), HttpStatus.BAD_REQUEST);
+        }
+        System.out.println(songCode);
+        System.out.println(playlistCode);
+        
+        Song song = songService.searchSongByCode(songCode);
+        Playlist playlist = playlistService.searchPlaylistByCode(playlistCode);
+        
+
+        if (song != null && playlist != null) {
+            try {
+                songXPlaylistService.save(new Timestamp(System.currentTimeMillis()), song, playlist);
+                return ResponseEntity.ok("Canción agregada a la playlist con éxito");
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Ocurrió un error al agregar la canción a la playlist");
+            }
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No se encontró la canción o la playlist");
+    }
 
     
 }

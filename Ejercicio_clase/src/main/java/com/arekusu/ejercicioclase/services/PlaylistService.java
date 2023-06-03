@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.arekusu.ejercicioclase.models.entities.Playlist;
+import com.arekusu.ejercicioclase.models.entities.Song;
 import com.arekusu.ejercicioclase.models.dtos.SavePlaylistDTO;
 import com.arekusu.ejercicioclase.models.entities.User;
 
@@ -16,5 +17,6 @@ public interface PlaylistService {
 	List<Playlist> findAll();
 	List<Playlist> findPlaylistByUser(User user);
     List<Playlist> findPlaylistsByUserAndTitle(User user, String title);
+    Playlist searchPlaylistByCode(String code);
 	
 }

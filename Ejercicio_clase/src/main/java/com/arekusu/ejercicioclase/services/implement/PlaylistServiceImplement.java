@@ -66,5 +66,17 @@ public class PlaylistServiceImplement implements PlaylistService {
 		   return playlistRepository.findByUser(user);
 	}
 
-}
+	@Override
+	public Playlist searchPlaylistByCode(String code) {
+		UUID codeParsed;
+		try {
+		codeParsed = UUID.fromString(code);
+	}catch(IllegalArgumentException e){
+		throw new IllegalArgumentException("Ha ocurrido un error al parsear el code");
+	}
+		return playlistRepository.findOneByCode(codeParsed);
+	}
+	}
+
+
 

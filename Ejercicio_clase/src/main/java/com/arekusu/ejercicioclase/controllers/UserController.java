@@ -16,7 +16,7 @@ import com.arekusu.ejercicioclase.utils.RequestErrorHandler;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api")
 public class UserController {
 
     private UserService userService;
@@ -33,7 +33,7 @@ public class UserController {
     
     private RequestErrorHandler errorHandler;
 
-    @GetMapping("/user")
+    @GetMapping("/users")
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userService.getAllUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
@@ -48,7 +48,7 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping("/create")
+    @PostMapping("/auth/signup")
     public ResponseEntity<?> createUser(@RequestBody UserDTO userDTO, BindingResult validations) {
     	
     	if(validations.hasErrors()) {
@@ -64,7 +64,7 @@ public class UserController {
     
 }
     
-    @GetMapping("playlist")
+    @GetMapping("/user/playlist")
     public ResponseEntity<?> getPlaylistByUser(@RequestParam("User")String userData, @RequestParam(required = false) String title){
     	User user = userService.getUserByUsername(userData,title);
     	if(user == null) {

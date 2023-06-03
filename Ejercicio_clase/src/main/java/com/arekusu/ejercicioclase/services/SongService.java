@@ -12,5 +12,5 @@ public interface SongService {
     boolean deleteSongByTitle(String title);
     Song createSong(Song song);
     Song createSong(SongDTO songDTO);
-
+    Song searchSongByCode(String code);
 }

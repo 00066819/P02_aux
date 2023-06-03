@@ -39,9 +39,11 @@ public class SongXPlaylist {
 	@NotEmpty
 	private Timestamp dateAdded;
 
-	public SongXPlaylist(@NotEmpty Timestamp dateAdded) {
+	public SongXPlaylist(@NotEmpty Timestamp dateAdded, Song song, Playlist playlist) {
 		super();
 		this.dateAdded = dateAdded;
+		this.song = song;
+		this.playlist = playlist;
 	}
 	
 	

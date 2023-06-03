@@ -1,8 +1,9 @@
 	package com.arekusu.ejercicioclase.services.implement;
 	
 	import java.util.List;
-	
-	import org.springframework.beans.factory.annotation.Autowired;
+import java.util.UUID;
+
+import org.springframework.beans.factory.annotation.Autowired;
 	import org.springframework.stereotype.Service;
 
     import com.arekusu.ejercicioclase.models.dtos.SongDTO;
@@ -66,4 +67,15 @@
 	        }
 	        return songRepository.save(song);
 	    }
+
+		@Override
+		public Song searchSongByCode(String code) {
+			UUID codeParsed;
+			try {
+			codeParsed = UUID.fromString(code);
+		}catch(IllegalArgumentException e){
+			throw new IllegalArgumentException("Ha ocurrido un error al parsear el code");
+		}
+			return songRepository.findOneByCode(codeParsed);
+		}
 	}
