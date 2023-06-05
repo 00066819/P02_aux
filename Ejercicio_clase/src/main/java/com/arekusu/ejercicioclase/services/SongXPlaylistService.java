@@ -1,6 +1,7 @@
 package com.arekusu.ejercicioclase.services;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -10,5 +11,10 @@ import com.arekusu.ejercicioclase.models.entities.SongXPlaylist;
 
 @Service
 public interface SongXPlaylistService {
-	void save(Timestamp time, Song song, Playlist playlist);
+    List<SongXPlaylist> findAll();
+    
+    void save(Timestamp timestamp, Song song, Playlist playlist);
+
+	List<SongXPlaylist> findByPlaylist(Playlist playlist);
+	
 }

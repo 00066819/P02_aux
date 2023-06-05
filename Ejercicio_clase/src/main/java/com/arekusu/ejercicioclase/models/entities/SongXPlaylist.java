@@ -37,7 +37,7 @@ public class SongXPlaylist {
 	
 	@Column(name = "date_added")
 	@NotEmpty
-	private Timestamp dateAdded;
+	private Timestamp dateAdded;	
 
 	public SongXPlaylist(@NotEmpty Timestamp dateAdded, Song song, Playlist playlist) {
 		super();

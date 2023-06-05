@@ -1,6 +1,7 @@
 package com.arekusu.ejercicioclase.services;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -17,6 +18,5 @@ public interface PlaylistService {
 	List<Playlist> findAll();
 	List<Playlist> findPlaylistByUser(User user);
     List<Playlist> findPlaylistsByUserAndTitle(User user, String title);
-    Playlist searchPlaylistByCode(String code);
 	
 }

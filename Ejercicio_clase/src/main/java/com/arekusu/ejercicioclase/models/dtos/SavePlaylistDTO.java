@@ -16,7 +16,7 @@ public class SavePlaylistDTO {
     
     @NotEmpty
     private String description;
-    
+ 
     @NotEmpty
     @Pattern(regexp = "^[0-9A-Z]{4}$")
     private User user;

@@ -40,14 +40,15 @@ public class PlaylistServiceImplement implements PlaylistService {
     }
     @Override
     public Playlist findOneById(String id) {
-        UUID playlistId;
+        
         try {
-            playlistId = UUID.fromString(id);
+        	UUID playlistId = UUID.fromString(id);
+            return playlistRepository.findById(playlistId)
+                    .orElse(null);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("El ID de la playlist no es válido");
         }
-        return playlistRepository.findById(playlistId)
-                .orElse(null);
+
     }
 
 
@@ -66,16 +67,7 @@ public class PlaylistServiceImplement implements PlaylistService {
 		   return playlistRepository.findByUser(user);
 	}
 
-	@Override
-	public Playlist searchPlaylistByCode(String code) {
-		UUID codeParsed;
-		try {
-		codeParsed = UUID.fromString(code);
-	}catch(IllegalArgumentException e){
-		throw new IllegalArgumentException("Ha ocurrido un error al parsear el code");
-	}
-		return playlistRepository.findOneByCode(codeParsed);
-	}
+
 	}
 
 

@@ -4,6 +4,8 @@ import java.util.List;
 
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -21,7 +23,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Table(name="Playlist")
-@ToString(exclude = {"songs"})
+@ToString(exclude = {"songxplaylist"})
 @NoArgsConstructor
 @Data
 @Entity
@@ -46,8 +48,9 @@ public class Playlist {
 	    @JoinColumn(name = "user_code", nullable=true)
 	    private User user;
 	
-	@OneToMany(mappedBy = "playlist")
-    private List<Song> songs;
+	@OneToMany(mappedBy = "playlist", fetch = FetchType.LAZY)
+	@JsonIgnore
+    private List<SongXPlaylist> songxplaylist;
 
 	public Playlist(@NotEmpty @Size(min = 5, max = 15) String title,
 			@NotEmpty @Size(min = 10, max = 100) String description, User user) {

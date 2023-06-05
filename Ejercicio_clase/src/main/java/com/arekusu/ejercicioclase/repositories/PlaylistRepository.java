@@ -15,7 +15,6 @@ public interface PlaylistRepository extends ListCrudRepository<Playlist, UUID> {
     List<Playlist> findByTitle(String title);
     List<Playlist> findByUser(User user);
     List<Playlist> findByUserAndTitleContaining(User user, String titleFragment);
-    Playlist findOneByCode(UUID code);
     void deleteByTitle(String title);;
 	
 }

@@ -12,17 +12,21 @@
 
 import com.arekusu.ejercicioclase.models.dtos.SongDTO;
 import com.arekusu.ejercicioclase.models.entities.Song;
-	import com.arekusu.ejercicioclase.services.SongService;
+import com.arekusu.ejercicioclase.models.entities.SongXPlaylist;
+import com.arekusu.ejercicioclase.services.SongService;
+import com.arekusu.ejercicioclase.services.SongXPlaylistService;
 	
 	@RestController
 	@RequestMapping("/songs")
 	public class SongController {
 	
 	    private final SongService songService;
+	    private final SongXPlaylistService songXplaylistService;
 	
 	    @Autowired
 	    public SongController(SongService songService) {
 	        this.songService = songService;
+			this.songXplaylistService = null;
 	    }
 	    
 	    @GetMapping("/")
@@ -75,7 +79,13 @@ import com.arekusu.ejercicioclase.models.entities.Song;
 		        return new ResponseEntity<>("Error decoding title", HttpStatus.BAD_REQUEST);
 		    }
 		}
+		
+		@GetMapping("/all")
+		public ResponseEntity<?> findAllSongXPlaylist(){
+			List<SongXPlaylist> songXplaylist = songXplaylistService.findAll();
 
+			return new ResponseEntity<>(songXplaylist,HttpStatus.OK);
+		}
 		  
 		
 }

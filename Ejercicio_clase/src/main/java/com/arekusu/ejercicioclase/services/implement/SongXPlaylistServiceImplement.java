@@ -1,6 +1,7 @@
 package com.arekusu.ejercicioclase.services.implement;
 
 import java.security.Timestamp;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,12 +35,24 @@ public class SongXPlaylistServiceImplement implements SongXPlaylistService{
         if (existingSXP != null) {
             throw new IllegalArgumentException("Esta cancion ya esta en la playlist.");
         }
-        SongXPlaylist SXP = new SongXPlaylist();
-        		SXP.setDateAdded(time);
-        		SXP.setSong(song);
-        		SXP.setPlaylist(playlist);
+        SongXPlaylist SXP = new SongXPlaylist(
+        		time,
+        		song,
+        		playlist
+        		);
         		songXPlaylistRepository.save(SXP);
-        
+	}
+
+	@Override
+	public List<SongXPlaylist> findAll() {
+		return songXPlaylistRepository.findAll();
+	}
+
+
+	@Override
+	public  List<SongXPlaylist> findByPlaylist(Playlist playlist) {
+		
+		return songXPlaylistRepository.findByPlaylist(playlist);
 	}
 	
 	

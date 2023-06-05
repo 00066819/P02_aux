@@ -69,13 +69,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 	    }
 
 		@Override
-		public Song searchSongByCode(String code) {
-			UUID codeParsed;
+		public Song searchSongByCode(String code) {	
 			try {
-			codeParsed = UUID.fromString(code);
+				UUID codeParsed = UUID.fromString(code);
+			return songRepository.findOneByCode(codeParsed);
 		}catch(IllegalArgumentException e){
 			throw new IllegalArgumentException("Ha ocurrido un error al parsear el code");
 		}
-			return songRepository.findOneByCode(codeParsed);
+			
 		}
 	}
