@@ -6,6 +6,7 @@ import com.arekusu.ejercicioclase.models.entities.User;
 import com.arekusu.ejercicioclase.repositories.UserRepository;
 import com.arekusu.ejercicioclase.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 
@@ -14,6 +15,10 @@ import java.util.List;
 @Service
 public class UserServiceImplement implements UserService {
 
+	@Autowired
+	public PasswordEncoder passwordEncoder;
+	
+	@Autowired
     private final UserRepository userRepository;
 
     @Autowired
@@ -52,7 +57,7 @@ public class UserServiceImplement implements UserService {
         User user = new User();
         user.setUsername(userDTO.getUsername());
         user.setEmail(userDTO.getEmail());
-        user.setPassword(userDTO.getPassword());
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
         return userRepository.save(user);
     }
