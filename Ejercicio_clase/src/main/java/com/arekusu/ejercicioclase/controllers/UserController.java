@@ -1,8 +1,11 @@
 package com.arekusu.ejercicioclase.controllers;
 
 import com.arekusu.ejercicioclase.models.dtos.MessageDTO;
+import com.arekusu.ejercicioclase.models.dtos.TokenDTO;
 import com.arekusu.ejercicioclase.models.dtos.UserDTO;
+import com.arekusu.ejercicioclase.models.dtos.UserLoginDTO;
 import com.arekusu.ejercicioclase.models.entities.Playlist;
+import com.arekusu.ejercicioclase.models.entities.Token;
 import com.arekusu.ejercicioclase.models.entities.User;
 import com.arekusu.ejercicioclase.services.PlaylistService;
 import com.arekusu.ejercicioclase.services.UserService;
@@ -12,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import com.arekusu.ejercicioclase.utils.RequestErrorHandler;
+
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -79,5 +84,30 @@ public class UserController {
         }
         return ResponseEntity.ok(playlists);
     }
+    
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@ModelAttribute @Valid UserLoginDTO info, BindingResult validations){
+    	if(validations.hasErrors()) {
+			return new ResponseEntity<>("Error inesperado", HttpStatus.BAD_REQUEST);
+		}
+		
+		User user = userService.findOneByIdentifier(info.getIdentifier(), info.getIdentifier());
+		
+		if(user == null) {
+			return new ResponseEntity<>("Usuario inexistente", HttpStatus.NOT_FOUND);
+		}
+		
+		if(!userService.comparePassword(info.getPassword(), user.getPassword())) {
+			return new ResponseEntity<>("Error de credenciales", HttpStatus.UNAUTHORIZED);
+		}
+		try {
+			Token token = userService.registerToken(user);
+			return new ResponseEntity<>(new TokenDTO(token), HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+    
  }  
 
