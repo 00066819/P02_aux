@@ -112,7 +112,7 @@ public class PlaylistController {
             return new ResponseEntity<>(validations.getFieldErrors(), HttpStatus.BAD_REQUEST);
         }
         
-        Song song = songService.searchSongByCode(data.getSongTitle());
+        Song song = songService.searchSongByCode(data.getSongCode());
         
         List<SongXPlaylist> songXplaylists = songXPlaylistService.findAll();
         boolean flag = true;
@@ -125,7 +125,7 @@ public class PlaylistController {
         }
         
         if (!flag) {
-            return new ResponseEntity<>(new MessageDTO("Song Duplicate"), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(new MessageDTO("Song Duplicate"), HttpStatus.BAD_REQUEST);
         }
         
         Playlist playlist = playlistService.findOneById(playlistCode);
@@ -133,7 +133,7 @@ public class PlaylistController {
         if (song != null && playlist != null) {
             try {
                 songXPlaylistService.save(new Timestamp(System.currentTimeMillis()), song, playlist);
-                return new ResponseEntity<>(new MessageDTO("SongXPlaylist created"), HttpStatus.CREATED);
+                return new ResponseEntity<>(new MessageDTO("¡Canción añadida a la playlist!"), HttpStatus.CREATED);
             } catch (Exception e) {
                 e.printStackTrace();
                 return new ResponseEntity<>(new MessageDTO("Internal Server Error"), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -144,32 +144,35 @@ public class PlaylistController {
     }
     
     
-    @GetMapping("/playlist/details/{playlistId}")
+    @GetMapping("/playlist/{playlistId}")
     public ResponseEntity<?> getPlaylistDuration(@PathVariable String playlistId) {
-    	
+
         Playlist playlist = playlistService.findOneById(playlistId);
         if (playlist == null) {
             return ResponseEntity.notFound().build();
         }
 
         List<SongXPlaylist> songXPlaylists = songXPlaylistService.findByPlaylist(playlist);
-        int totalDuration = songXPlaylists.stream()
+        int totalDurationInSeconds = songXPlaylists.stream()
                 .mapToInt(songXPlaylist -> songXPlaylist.getSong().getDuration())
                 .sum();
 
+        int minutes = totalDurationInSeconds / 60;  // Obtiene los minutos
+        int seconds = totalDurationInSeconds % 60;  // Obtiene los segundos
+
         List<Song> songs = songXPlaylists.stream().map(SongXPlaylist::getSong).collect(Collectors.toList());
         System.out.println(songs);
-        
+
         PlaylistDTO playlistDTO = new PlaylistDTO();
         playlistDTO.setCode(playlist.getCode());
         playlistDTO.setTitle(playlist.getTitle());
         playlistDTO.setDescription(playlist.getDescription());
         playlistDTO.setSongs(songs);
-        playlistDTO.setTotalDuration(totalDuration);
+        playlistDTO.setTotalDurationMinutes(minutes);
+        playlistDTO.setTotalDurationSeconds(seconds);
 
         return ResponseEntity.ok(playlistDTO);
     }
-
-
     
-}
+}	
+   

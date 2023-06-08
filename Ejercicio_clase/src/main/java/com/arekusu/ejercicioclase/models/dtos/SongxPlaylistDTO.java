@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SongxPlaylistDTO {
-    private String songTitle;
+    private String songCode;
 
 }

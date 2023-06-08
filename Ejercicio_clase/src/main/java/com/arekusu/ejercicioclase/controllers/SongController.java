@@ -30,7 +30,7 @@ import com.arekusu.ejercicioclase.services.SongXPlaylistService;
 	    }
 	    
 	    @GetMapping("/")
-	    public ResponseEntity<List<SongDTO>> getAllSongs() {
+	    public ResponseEntity<?> getAllSongs() {
 	        List<Song> songs = songService.getAllSongs();
 	        List<SongDTO> songDTOs = new ArrayList<>();
 
@@ -41,7 +41,7 @@ import com.arekusu.ejercicioclase.services.SongXPlaylistService;
 	            songDTOs.add(songDTO);
 	        }
 
-	        return new ResponseEntity<>(songDTOs, HttpStatus.OK);
+	        return new ResponseEntity<>(songs, HttpStatus.OK);
 	    }
 	
 	

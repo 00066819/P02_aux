@@ -41,7 +41,7 @@ public class Song {
         
         }
     
-    public String getFormattedDuration() {
+    public String getSongDuration() {
         int minutes = duration / 60;
         int seconds = duration % 60;
         return String.format("%d:%02d", minutes, seconds);

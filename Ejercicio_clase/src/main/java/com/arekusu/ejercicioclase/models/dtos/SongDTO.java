@@ -47,7 +47,7 @@ public class SongDTO {
         this.seconds = totalDurationInSeconds % 60;
     }
 
-    public String getFormattedDuration() {
+    public String getSongDuration() {
         return String.format("%02d:%02d", minutes, seconds);
     }
 }
